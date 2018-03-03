@@ -23,5 +23,15 @@ services:
       - "80:80"
     depends_on:
       - webui
+      - mrcnn
 
+  mrcnn:
+    image: nathancooper/deepspaces:mrcnn
+    build:
+      context: ../
+      dockerfile: ./mrcnn-ms/Dockerfile.development
+    volumes:
+      - ../mrcnn-ms:/home/mrcnn/
+    depends_on:
+      - webui
 

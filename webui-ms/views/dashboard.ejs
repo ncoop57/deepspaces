@@ -14,16 +14,18 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script>
-
+        var counter = 0;
     	spaces = [];
     	function addSpace(event, elem) {
 
         var rect = elem.getBoundingClientRect();
+
     		var x = Math.floor(event.clientX - rect.left);
     		var y = Math.floor(event.clientY - rect.top);
     		var type = prompt("What type of slot is this?", "All");
 
     		space = {
+                space_id: counter++,
     			type: type,
     			x_coord: x,
     			y_coord: y
