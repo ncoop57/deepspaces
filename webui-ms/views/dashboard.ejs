@@ -9,7 +9,7 @@
         <h1>Click the Image Now ! Muahahahahaha</h1>
     	<img src = "images/dashboard.jpg" onclick = "addSpace(event, this)">
     	<p id = "demo"></p>
-
+        <button onclick="submitSpaces()">Submit</button>
     </body>
 
     <script>
@@ -40,6 +40,23 @@
     		document.getElementById("demo").innerHTML = lot;
 
     	}
+
+        function submitSpaces(){
+            $.ajax({
+            url: '/add_space',
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(spaces),
+            success: function(result, status, xhr) {
+                console.log(result);
+                // window.location = '/dashboard';
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            },
+            contentType: "application/json"
+            });
+        }
 
     </script>
 
