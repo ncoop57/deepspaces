@@ -7,3 +7,4 @@ scikit-image
 tensorflow==1.5
 keras
 jupyter
+opencv-python
