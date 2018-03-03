@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+
+    <head>
+    	<title>Admin Dashboard</title>
+    </head>
+
+    <body>
+
+    	<img src = "images/dashboard.jpg" onclick = "addSpace(event)">
+    	<p id = "demo"></p>
+
+    </body>
+
+    <script>
+
+    	spaces = [];
+    	function addSpace(event) {
+
+    		var x = event.clientX;
+    		var y = event.clientY;
+    		var type = prompt("What type of slot is this?", "All");
+
+    		space = {
+    			type: type,
+    			x_coord: x,
+    			y_coord: y
+    		};
+
+    		spaces.push(space);
+    		var lot = "";
+    		for (var i = 0; i < spaces.length; i++)
+    			lot += spaces[i].type +
+    					" x_coord: " +
+    					spaces[i].x_coord +
+    					" y_coord: " +
+    					spaces[i].y_coord;
+
+    		document.getElementById("demo").innerHTML = lot;
+
+    	}
+
+    </script>
+
+</html>

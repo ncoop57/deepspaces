@@ -1,0 +1,36 @@
+<nav class="navbar navbar-default navbar-static-top">
+
+    <div class="container-fluid">
+
+	<div class="navbar-header">
+    <% email = decodeURIComponent(email); %>
+	    <a class="navbar-brand" href="/">'<%= email %>'</a>
+
+	</div>
+
+	<div class="collapse navbar-collapse" id="bs-example-navbar-ollapse-1">
+
+	    <ul class="nav navbar-nav navbar-right">
+
+		<li class="dropdown">
+
+		    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+			Account
+			<span class="caret"></span></a>
+			<ul class="dropdown-menu" role="menu">
+
+			    <li class=""><a href="#">Profile</a></li>
+			    <li class="divider"></li>
+			    <li><a href="#">Logout</a></li>
+
+			</ul>
+
+		</li>
+
+	    </ul>
+
+	</div>
+
+    </div>
+
+</nav>

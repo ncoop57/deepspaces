@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  webui:
+    image: nathancooper/deepspaces:webui
+    build:
+      context: ../
+      dockerfile: ./webui-ms/Dockerfile.development
+    volumes:
+      - ../webui-ms:/home/webui/
+    depends_on:
+      - spaces-db
+
+  lots-db:
+    image: mongo
+
+  reverse-proxy:
+    image: nathancooper/deepspaces:reverse-proxy
+    build:
+      context: ../
+      dockerfile: ./reverse-proxy/Dockerfile.development
+    ports:
+      - "80:80"
+    depends_on:
+      - webui
+
+
