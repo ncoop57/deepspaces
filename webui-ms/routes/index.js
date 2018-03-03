@@ -9,7 +9,7 @@ router.get("/dashboard", function(req, res) {
 
 router.post("/add_space", function(req, res) {
     console.log("adding space", req.body);
-    res.send('SUCCESS');
+    res.send({'SUCCESS': true});
     // const new_space = new Space({space_id: req.body.space_id,
     //                             is_available: false,
     //                             type: req.body.type,
