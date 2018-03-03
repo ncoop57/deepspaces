@@ -10,16 +10,18 @@ router.get("/dashboard", function(req, res) {
 router.post("/add_space", function(req, res) {
     console.log("adding space", req.body);
     res.send({'SUCCESS': true});
-    // const new_space = new Space({space_id: req.body.space_id,
-    //                             is_available: false,
-    //                             type: req.body.type,
-    //                             x_coord: req.body.x_coord,
-    //                             y_coord: req.body.y_coord,
-    //                             percentage: 0});
-
-    // new_space.save(function(err, new_space) {
-    //     if (err) return console.error(err);
-    // });
+    for(var space in req.body){
+        const new_space = new Space({space_id: space.space_id,
+                                    is_available: false,
+                                    type: space.type,
+                                    x_coord: space.x_coord,
+                                    y_coord: space.y_coord,
+                                    percentage: 0});
+        new_space.save(function(err, new_space) {
+            if (err) return console.error(err);
+            console.log(new_space);
+        });
+    }
 });
 
 module.exports = router;
