@@ -6,15 +6,12 @@
     "start": "nodemon server.js"
   },
   "dependencies": {
-    "amqplib": "0.5.2",
     "body-parser": "latest",
     "cookie-parser": "latest",
     "ejs": "latest",
     "express": "4.15.2",
-    "jsonwebtoken": "latest",
     "models": "file:./models",
     "request": "latest",
-    "request-cookies": "1.1.0",
-    "socket.io": "^2.0.4"
+    "request-cookies": "1.1.0"
   }
 }
