@@ -43,5 +43,5 @@ router.get('/get_spaces', function(req, res){
     });
 });
 
-module.exports = router;\
+module.exports = router;
 
