@@ -7,7 +7,7 @@
 
     <body>
         <h1>Click the Image Now ! Muahahahahaha</h1>
-    	<img src = "images/dashboard.jpg" onclick = "addSpace(event)">
+    	<img src = "images/dashboard.jpg" onclick = "addSpace(event, this)">
     	<p id = "demo"></p>
 
     </body>
@@ -15,10 +15,11 @@
     <script>
 
     	spaces = [];
-    	function addSpace(event) {
+    	function addSpace(event, elem) {
 
-    		var x = event.clientX;
-    		var y = event.clientY;
+        var rect = elem.getBoundingClientRect();
+    		var x = Math.floor(event.clientX - rect.left);
+    		var y = Math.floor(event.clientY - rect.top);
     		var type = prompt("What type of slot is this?", "All");
 
     		space = {

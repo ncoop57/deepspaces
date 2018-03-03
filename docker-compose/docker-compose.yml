@@ -11,7 +11,7 @@ services:
     depends_on:
       - spaces-db
 
-  lots-db:
+  spaces-db:
     image: mongo
 
   reverse-proxy:
