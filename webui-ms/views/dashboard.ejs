@@ -175,10 +175,10 @@
             }
             spaces.push(space);
             diffX = twoSpaces[1].x_coord - twoSpaces[0].x_coord;
-            diffX = Math.floor(diffX / num);
+            diffX = Math.floor(diffX / (num-1));
 
             diffY = twoSpaces[1].y_coord - twoSpaces[0].y_coord;
-            diffY = Math.floor(diffY / num);
+            diffY = Math.floor(diffY / (num-1));
 
             for(var i = 1; i<num-1; i++){
                 space = {
@@ -208,10 +208,10 @@
             }
             gps.push(space);
             diff_lat = twoGPS[1].gps_lat - twoGPS[0].gps_lat;
-            diff_lat = diff_lat / num;
+            diff_lat = diff_lat / (num-1);
 
             diff_lng = twoGPS[1].gps_lng - twoGPS[0].gps_lng;
-            diff_lng = diff_lat / num;
+            diff_lng = diff_lat / (num-1);
             for(var i = 1; i<num-1; i++){
                 space = {
                     gps_lat: gps[i-1].gps_lat + diff_lat,
