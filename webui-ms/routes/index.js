@@ -28,16 +28,23 @@ router.post("/add_space", function(req, res) {
 
 // Python script calls this POST request
 router.post('/update_spaces', function(req, res){
+//    console.log("Updating spaces", req.body);
     for(var i = 0; i<req.body.length; i++){
-        Space.findOneAndUpdate({'space_id': req.body[i].space_id}, {is_available: req.body[i].is_available}, {safe: true, upsert: true}, function(err, model) {
-        if (err) return console.log(err);
-        return res.send("What's up MaskRCNN? GreatScotts!");
-    });
+        Space.findOneAndUpdate({'space_id': req.body[i].space_id}, {'is_available': req.body[i].is_available}, function(err, space) {
+        if (err) console.log(err)});
     }
+    return res.json({"success": true});
 });
 
 router.get('/get_spaces', function(req, res){
     Space.find({}).exec(function(err, spaces) {
+        if (err) res.send(err);
+        res.json(spaces);
+    });
+});
+
+router.get('/del_spaces', function(req, res){
+    Space.remove({}).exec(function(err, spaces) {
         if (err) res.send(err);
         res.json(spaces);
     });
