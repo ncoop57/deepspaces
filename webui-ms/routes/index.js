@@ -39,7 +39,7 @@ router.post('/update_spaces', function(req, res){
 router.get('/get_spaces', function(req, res){
     Space.find({}).exec(function(err, spaces) {
         if (err) res.send(err);
-        res.send({ spaces: spaces});
+        res.json(spaces);
     });
 });
 

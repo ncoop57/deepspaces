@@ -101,6 +101,8 @@ def gen_masks(spaces):
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
+    print(spaces)
+
     while True:
         ret, frame = capture.read()
         results = model.detect([frame], verbose=0)
@@ -109,15 +111,15 @@ def gen_masks(spaces):
             frame, r['rois'], r['masks'], r['class_ids'], class_names, r['scores']
         )
 
-        for space in spaces:
-            if frame[space.x_coord][space.y_coord] == [255, 0, 255]:
-                space.is_available = False
-            else:
-                space.is_available = True
+#        for space in spaces:
+#            if frame[space.x_coord][space.y_coord] == [255, 0, 255]:
+#                space.is_available = False
+#            else:
+#                space.is_available = True
 
-        requests.post('http://webui/update_spaces', data=spaces)
+#        requests.post('http://webui/update_spaces', data=spaces)
 
-        # cv2.imwrite('frame.png', frame)
+        cv2.imwrite('frame.png', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
