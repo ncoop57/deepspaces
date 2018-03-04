@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 def random_colors(N):
     np.random.seed(1)
-    colors = [tuple(255, 0, 255) for _ in range(N)]
+    colors = [tuple([255, 0, 255]) for _ in range(N)]
     return colors
 
 
@@ -110,12 +110,14 @@ def gen_masks(spaces):
         )
 
         for space in spaces:
-            if frame[space.x_coord][space.y_coord] == tuple(255, 0, 255):
+            if frame[space.x_coord][space.y_coord] == [255, 0, 255]:
                 space.is_available = False
             else:
                 space.is_available = True
 
-        cv2.imwrite('frame.png', frame)
+        requests.post('http://webui/update_spaces', data=spaces)
+
+        # cv2.imwrite('frame.png', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
