@@ -27,6 +27,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.orhanobut.dialogplus.DialogPlus;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * An activity that displays a Google map with a marker (pin) to indicate a particular location.
  */
@@ -41,6 +45,7 @@ public class MapsMarkerActivity extends AppCompatActivity
 
     private Marker mPos1;
     private Marker mPos2;
+    private Marker marker;
  //   private Marker mPos3;
 
     private GoogleMap mMap;
@@ -48,8 +53,10 @@ public class MapsMarkerActivity extends AppCompatActivity
     private RequestQueue mRequestQueue;
     private StringRequest stringRequest;
 
-    private String url = "http://54.145.198.32/get_spaces";
 
+
+    private String url = "http://54.145.198.32/get_spaces";
+    private String resp;
     private void sendRequest() {
         mRequestQueue = Volley.newRequestQueue(this);
 
@@ -57,12 +64,30 @@ public class MapsMarkerActivity extends AppCompatActivity
             @Override
             public void onResponse(String response) {
 
-                Log.i(TAG, "Response:" + response.toString());
+                Log.i("result", "Response:" + response.toString());
+                resp = response.toString();
+//                Log.i()
+                try {
+                    JSONArray jsonList = new JSONArray(resp);
+
+                    for(int i = 0; i<jsonList.length(); i++){
+                        JSONObject obj = (JSONObject) jsonList.get(i);
+                        double lat = obj.getDouble("gps_lat");
+                        double lng = obj.getDouble("gps_lng");
+                        LatLng pos = new LatLng(lat, lng );
+                        marker = mMap.addMarker(new MarkerOptions().position(pos).title("dsfad")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        marker.setTag(0);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Log.i(TAG, volleyError.toString());
+                Log.i("ErrorResponse", volleyError.toString());
             }
         });
         mRequestQueue.add(stringRequest);
@@ -90,7 +115,9 @@ public class MapsMarkerActivity extends AppCompatActivity
         showDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.show();
+                sendRequest();
+
+//                dialog.show();
             }
         });
     }
@@ -181,3 +208,4 @@ public class MapsMarkerActivity extends AppCompatActivity
 
 
 }
+
