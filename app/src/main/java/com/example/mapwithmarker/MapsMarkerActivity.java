@@ -1,12 +1,21 @@
 package com.example.mapwithmarker;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,7 +34,7 @@ public class MapsMarkerActivity extends AppCompatActivity
         implements OnMapReadyCallback {
 
     Button showDialogButton;
-
+    private static final String TAG = MapsMarkerActivity.class.getName();
     private static final LatLng POS1 = new LatLng(30.547452, -87.217689 );
     private static final LatLng POS2 = new LatLng(30.547377, -87.217799);
   //  private static final LatLng POS3 = new LatLng(30.547220, -87.217399);
@@ -36,6 +45,28 @@ public class MapsMarkerActivity extends AppCompatActivity
 
     private GoogleMap mMap;
 
+    private RequestQueue mRequestQueue;
+    private StringRequest stringRequest;
+
+    private String url = "http://54.145.198.32/get_spaces";
+
+    private void sendRequest() {
+        mRequestQueue = Volley.newRequestQueue(this);
+
+        stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.i(TAG, "Response:" + response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.i(TAG, volleyError.toString());
+            }
+        });
+        mRequestQueue.add(stringRequest);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +94,8 @@ public class MapsMarkerActivity extends AppCompatActivity
             }
         });
     }
+
+
 
     /**
      * Manipulates the map when it's available.
@@ -122,6 +155,28 @@ public class MapsMarkerActivity extends AppCompatActivity
 
 
 
+    }
+    protected void getSpacesPeriodically() {
+        final Handler mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                //Location l = (Location) msg.obj;
+                //Toast.makeText(getApplicationContext(), "Latitude: " + String.valueOf(l.getLatitude()) + " Longitude: " + String.valueOf(l.getLongitude()),
+                 //       Toast.LENGTH_LONG).show();
+            }
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(10000);
+                        Log.i(TAG, "Running");
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }).start();
     }
 
 
