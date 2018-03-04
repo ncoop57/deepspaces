@@ -2,6 +2,10 @@ package com.example.mapwithmarker;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,12 +14,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.orhanobut.dialogplus.DialogPlus;
 
 /**
  * An activity that displays a Google map with a marker (pin) to indicate a particular location.
  */
 public class MapsMarkerActivity extends AppCompatActivity
         implements OnMapReadyCallback {
+
+        Button showDialogButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,20 @@ public class MapsMarkerActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        showDialogButton = (Button) findViewById(R.id.showDialogButton);
+
+        final DialogPlus dialog = DialogPlus.newDialog(this)
+                .setGravity(Gravity.BOTTOM)
+                .setExpanded(true)  // This will enable the expand feature, (similar to android L share dialog)
+                .create();
+
+        showDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
+            }
+        });
     }
 
     /**
@@ -56,7 +78,7 @@ public class MapsMarkerActivity extends AppCompatActivity
         googleMap.addMarker(new MarkerOptions().position(s1).title("Type: Commute"));
         googleMap.addMarker(new MarkerOptions().position(s2).title("Type: Stuff"));
 
-        
+
 
 
         //zoom method 1
@@ -71,5 +93,9 @@ public class MapsMarkerActivity extends AppCompatActivity
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(s1));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(s2));
 
+
+
     }
+
+
 }
