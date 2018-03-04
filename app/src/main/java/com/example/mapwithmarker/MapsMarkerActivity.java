@@ -149,7 +149,7 @@ public class MapsMarkerActivity extends AppCompatActivity
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mPos2.setTag(0);
 
-        LatLng s1 = new LatLng(30.547105, -87.217556);
+        LatLng s1 = new LatLng(30.547255, -87.217764);
         googleMap.addMarker(new MarkerOptions().position(s1).title("adfs")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
