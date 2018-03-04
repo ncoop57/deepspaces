@@ -241,6 +241,7 @@
                     gps_lng: gps[i].gps_lng
                 }
                 slots.push(slot);
+                addMarker({coords:{lat:slot.gps_lat,lng:slot.gps_lng}})
             }
 
             $.ajax({
