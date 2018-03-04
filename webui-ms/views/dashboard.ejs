@@ -174,11 +174,17 @@
 
             }
             spaces.push(space);
+            diffX = twoSpaces[1].x_coord - twoSpaces[0].x_coord;
+            diffX = Math.floor(diffX / num);
+
+            diffY = twoSpaces[1].y_coord - twoSpaces[0].y_coord;
+            diffY = Math.floor(diffY / num);
+
             for(var i = 1; i<num-1; i++){
                 space = {
                     space_id:  spaces.length,
-                    x_coord: (i*twoSpaces[0].x_coord + (num-i)*twoSpaces[1].x_coord)/(num),
-                    y_coord: (i*twoSpaces[0].y_coord + (num-i)*twoSpaces[1].y_coord)/(num),
+                    x_coord: spaces[i-1].x_coord + diffX ,
+                    y_coord: spaces[i-1].y_coord + diffY ,,
                     type: twoSpaces[0].type
 
                 }
@@ -201,10 +207,15 @@
 
             }
             gps.push(space);
+            diff_lat = twoGPS[1].gps_lat - twoGPS[0].gps_lat;
+            diff_lat = diff_lat / num;
+
+            diff_lng = twoGPS[1].gps_lng - twoGPS[0].gps_lng;
+            diff_lng = diff_lat / num;
             for(var i = 1; i<num-1; i++){
                 space = {
-                    gps_lat: (i*twoGPS[0].gps_lat + (num-i)*twoGPS[1].gps_lat)/(num),
-                    gps_lng: (i*twoGPS[0].gps_lng + (num-i)*twoGPS[1].gps_lng)/(num)
+                    gps_lat: gps[i-1].gps_lat + diff_lat,
+                    gps_lng: gps[i-1].gps_lng + diff_lng
 
                 }
                 gps.push(space);
