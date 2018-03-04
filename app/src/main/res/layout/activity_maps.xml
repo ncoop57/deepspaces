@@ -10,7 +10,7 @@
         android:id="@+id/showDialogButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
+        android:layout_gravity=""
         android:layout_marginTop="20dp"
         android:padding="10dp"
         android:paddingRight="10dp"

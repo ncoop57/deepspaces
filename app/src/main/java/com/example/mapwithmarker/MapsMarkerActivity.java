@@ -11,8 +11,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.orhanobut.dialogplus.DialogPlus;
 
@@ -22,7 +24,17 @@ import com.orhanobut.dialogplus.DialogPlus;
 public class MapsMarkerActivity extends AppCompatActivity
         implements OnMapReadyCallback {
 
-        Button showDialogButton;
+    Button showDialogButton;
+
+    private static final LatLng POS1 = new LatLng(30.547452, -87.217689 );
+    private static final LatLng POS2 = new LatLng(30.547377, -87.217799);
+  //  private static final LatLng POS3 = new LatLng(30.547220, -87.217399);
+
+    private Marker mPos1;
+    private Marker mPos2;
+ //   private Marker mPos3;
+
+    private GoogleMap mMap;
 
 
     @Override
@@ -36,6 +48,7 @@ public class MapsMarkerActivity extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // get the dialog box in the bottom, uses teh dialog button
         showDialogButton = (Button) findViewById(R.id.showDialogButton);
 
         final DialogPlus dialog = DialogPlus.newDialog(this)
@@ -63,35 +76,49 @@ public class MapsMarkerActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // and move the map's camera to the same location.
+
+
         googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        mMap = googleMap;
+
+        mPos1 = mMap.addMarker(new MarkerOptions().position(POS1).title("dsfad")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mPos1.setTag(0);
+
+        mPos2 = mMap.addMarker(new MarkerOptions().position(POS2).title("hgfh")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mPos2.setTag(0);
+
+        LatLng s1 = new LatLng(30.547105, -87.217556);
+        googleMap.addMarker(new MarkerOptions().position(s1).title("adfs")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
 
-
-        LatLng sydney = new LatLng(30.547105, -87.217556);
+      /*  LatLng sydney = new LatLng(30.547105, -87.217556);
         LatLng s1 = new LatLng(30.547377, -87.217799);
-        LatLng s2 = new LatLng(30.547220, -87.217399);
+        LatLng s2 = new LatLng(30.547220, -87.217399);*/
 
 
-        googleMap.addMarker(new MarkerOptions().position(sydney)
+        /*googleMap.addMarker(new MarkerOptions().position(sydney)
                 .title("Type: Disability"));
 
         googleMap.addMarker(new MarkerOptions().position(s1).title("Type: Commute"));
-        googleMap.addMarker(new MarkerOptions().position(s2).title("Type: Stuff"));
+        googleMap.addMarker(new MarkerOptions().position(s2).title("Type: Stuff"));*/
 
 
 
 
         //zoom method 1
         float zoomLevel = 19.5f; //This goes up to 21
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel));
+    //    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom((LatLng)mPos1, zoomLevel));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(s1,zoomLevel));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(s2,zoomLevel));
+     //   googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(s2,zoomLevel));
 
 
         //update the camera
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    //    googleMap.moveCamera(CameraUpdateFactory.newLatLng((Marker)mPos1));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(s1));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(s2));
+     //   googleMap.moveCamera(CameraUpdateFactory.newLatLng(s2));
 
 
 
