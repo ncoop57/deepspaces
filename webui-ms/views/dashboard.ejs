@@ -16,9 +16,18 @@
     	<img src = "images/dashboard.png" onclick = "addSpace(event, this)">
     	<p id = "demo"></p>
         <button onclick="submitSpaces()">Submit</button>
-
+        <button onclick='removeSpaces()'>Remove</button>
         <div id="map"></div>
-          <script>
+
+
+
+
+    </body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+
+
             function initMap(){
               // Map options
               var options = {
@@ -33,24 +42,8 @@
               google.maps.event.addListener(map, 'click', function(event){
                 // Add marker
                 addMarker({coords:event.latLng});
+                addGPS(event.latLng);
               });
-
-              /*
-              // Add marker
-              var marker = new google.maps.Marker({
-                position:{lat:42.4668,lng:-70.9495},
-                map:map,
-                icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
-              });
-
-              var infoWindow = new google.maps.InfoWindow({
-                content:'<h1>Lynn MA</h1>'
-              });
-
-              marker.addListener('click', function(){
-                infoWindow.open(map, marker);
-              });
-              */
 
               // Array of markers
               var markers = [
@@ -100,18 +93,17 @@
                 }
               }
             }
-          </script>
-          <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-Ir2I668E1aS-rkuDYYsIjQdstOPth1A&callback=initMap">
-    </script>
 
-        
-    </body>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script>
+
         var counter = 0;
-    	spaces = [];
+        spaces = [];
+        gps = [];
+
+
+
+        var tempSpaces = [];
+
     	function addSpace(event, elem) {
 
         var rect = elem.getBoundingClientRect();
@@ -121,31 +113,141 @@
     		var type = prompt("What type of slot is this?", "All");
 
     		space = {
-                space_id: counter++,
     			type: type,
     			x_coord: x,
     			y_coord: y
     		};
 
-    		spaces.push(space);
+    		tempSpaces.push(space);
+            var num = prompt("How many Spaces?");
+            if(tempSpaces.length==2){
+                gen_spaces(tempSpaces, num);
+                tempSpaces = [];
+            }
     		var lot = "";
-    		for (var i = 0; i < spaces.length; i++)
-    			lot += spaces[i].type +
+    		for (var i = 0; i < tempSpaces.length; i++)
+    			lot += tempSpaces[i].type +
     					" x_coord: " +
-    					spaces[i].x_coord +
+    					tempSpaces[i].x_coord +
     					" y_coord: " +
-    					spaces[i].y_coord;
+    					tempSpaces[i].y_coord;
 
     		document.getElementById("demo").innerHTML = lot;
 
     	}
+        tempGPS = [];
+        function addGPS(coords) {
+
+            geo = {
+                gps_lat: coords.lat,
+                gps_lng: coords.lng
+            };
+
+            tempGPS.push(geo);
+            var num = prompt("How many Spaces?");
+            if(tempGPS.length==2){
+                gen_GPS(tempGPS, num);
+                tempGPS = [];
+            }
+            var lot = "";
+            for (var i = 0; i < tempGPS.length; i++)
+                lot +=  " LATITUDE: " +
+                        tempGPS[i].tempGPS_lat +
+                        " LONGITUDE: " +
+                        tempGPS[i].tempGPS_lng;
+
+            document.getElementById("demo").innerHTML = lot;
+
+        }
+
+        function gen_spaces(twoSpaces, num){
+            var space = {
+                space_id:  spaces.length,
+                x_coord: twoSpaces[0].x_coord,
+                y_coord: twoSpaces[0].y_coord,
+                type: twoSpaces[0].type
+
+            }
+            spaces.push(space);
+            for(var i = 1; i<num; i++){
+                space = {
+                    space_id:  spaces.length,
+                    x_coord: (i*twoSpaces[0].x_coord + (num-i)*twoSpaces[1].x_coord)/(num),
+                    y_coord: (i*twoSpaces[0].y_coord + (num-i)*twoSpaces[1].y_coord)/(num),
+                    type: twoSpaces[0].type
+
+                }
+                spaces.push(space);
+            }
+            space = {
+                space_id:  spaces.length,
+                x_coord: twoSpaces[1].x_coord,
+                y_coord: twoSpaces[1].y_coord,
+                type: twoSpaces[1].type
+
+            }
+            spaces.push(space);
+        }
+
+        function gen_GPS(twoGPS, num){
+            var space = {
+                gps_lng: twoGPS[0].gps_lng,
+                gps_lat: twoSpaces[0].gps_lat
+
+            }
+            gps.push(space);
+            for(var i = 1; i<num; i++){
+                space = {
+                    gps_lat: (i*twoGPS[0].gps_lat + (num-i)*twoGPS[1].gps_lat)/(num),
+                    gps_lng: (i*twoGPS[0].gps_lng + (num-i)*twoGPS[1].gps_lng)/(num)
+
+                }
+                gps.push(space);
+            }
+            space = {
+                gps_lng: twoGPS[1].gps_lng,
+                gps_lat: twoSpaces[1].gps_lat
+
+            }
+            gps.push(space);
+        }
 
         function submitSpaces(){
+            slots = [];
+
+            for(var i = 0; i<spaces.length; i++){
+                var slot = {
+                    space_id:spaces[i].space_id,
+                    type: spaces[i].type,
+                    x_coord: spaces[i].x_coord,
+                    y_coord: spaces[i].y_coord,
+                    gps_lat: gps[i].gps_lat,
+                    gps_lng: gps[i].gps_lng
+                }
+                slots.push(slot);
+            }
+
             $.ajax({
-            url: '/add_space',
+            url: '/add_spaces',
             type: 'POST',
             dataType: 'json',
-            data: JSON.stringify(spaces),
+            data: JSON.stringify(slots),
+            success: function(result, status, xhr) {
+                console.log(result);
+                // window.location = '/dashboard';
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            },
+            contentType: "application/json"
+            });
+        }
+
+        function removeSpaces(){
+            $.ajax({
+            url: '/del_spaces',
+            type: 'POST',
+            dataType: 'json',
             success: function(result, status, xhr) {
                 console.log(result);
                 // window.location = '/dashboard';
@@ -158,5 +260,7 @@
         }
 
     </script>
-
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-Ir2I668E1aS-rkuDYYsIjQdstOPth1A&callback=initMap">
+    </script>
 </html>
