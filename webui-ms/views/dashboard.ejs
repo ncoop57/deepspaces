@@ -44,6 +44,7 @@
               google.maps.event.addListener(map, 'click', function(event){
                 // Add marker
                 addMarker({coords:event.latLng});
+                console.log(event.latLng);
                 addGPS(event.latLng);
               });
 
@@ -142,8 +143,8 @@
         function addGPS(coords) {
 
             geo = {
-                gps_lat: coords.lat,
-                gps_lng: coords.lng
+                gps_lat: coords.lat(),
+                gps_lng: coords.lng()
             };
 
             tempGPS.push(geo);
