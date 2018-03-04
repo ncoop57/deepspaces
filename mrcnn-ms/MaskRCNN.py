@@ -6,24 +6,18 @@ import utils
 import model as modellib
 import numpy as np
 from flask import Flask
+import requests
 
 app = Flask(__name__)
 
-@app.route('/start')
-def start():
-    gen_masks()
-    return "Hello World!"
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port = 80)
 
 def random_colors(N):
     np.random.seed(1)
-    colors = [tuple(255 * np.random.rand(3)) for _ in range(N)]
+    colors = [tuple(255, 0, 255) for _ in range(N)]
     return colors
 
 
-def apply_mask(image, mask, color, alpha=0.5):
+def apply_mask(image, mask, color, alpha=1):
     """apply mask to image"""
     for n, c in enumerate(color):
         image[:, :, n] = np.where(
@@ -65,7 +59,7 @@ def display_instances(image, boxes, masks, ids, names, scores):
     return image
 
 
-def gen_masks():
+def gen_masks(spaces):
     ROOT_DIR = os.getcwd()
     MODEL_DIR = os.path.join(ROOT_DIR, "logs")
     COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
@@ -114,9 +108,25 @@ def gen_masks():
         frame = display_instances(
             frame, r['rois'], r['masks'], r['class_ids'], class_names, r['scores']
         )
+
+        for space in spaces:
+            if frame[space.x_coord][space.y_coord] == tuple(255, 0, 255):
+                space.is_available = False
+            else:
+                space.is_available = True
+
         cv2.imwrite('frame.png', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     capture.release()
     cv2.destroyAllWindows()
+
+@app.route('/start')
+def start():
+    res = requests.get('http://webui/get_spaces')
+    gen_masks(res.json())
+    return "Hello World!"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port = 80)
