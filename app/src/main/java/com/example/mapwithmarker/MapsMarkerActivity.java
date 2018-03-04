@@ -35,7 +35,7 @@ public class MapsMarkerActivity extends AppCompatActivity
 
     Button showDialogButton;
     private static final String TAG = MapsMarkerActivity.class.getName();
-    private static final LatLng POS1 = new LatLng(30.547452, -87.217689 );
+    private static final LatLng POS1 = new LatLng(30.547437, -87.217710 );
     private static final LatLng POS2 = new LatLng(30.547377, -87.217799);
   //  private static final LatLng POS3 = new LatLng(30.547220, -87.217399);
 
