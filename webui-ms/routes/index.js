@@ -43,7 +43,7 @@ router.get('/get_spaces', function(req, res){
     });
 });
 
-router.get('/del_spaces', function(req, res){
+router.post('/del_spaces', function(req, res){
     Space.remove({}).exec(function(err, spaces) {
         if (err) res.send(err);
         res.json(spaces);

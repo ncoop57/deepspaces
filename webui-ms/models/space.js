@@ -31,7 +31,9 @@ let spaceSchema = new Schema({
     type: String,
     x_coord: Number,
     y_coord: Number,
-    percentage: Number
+    percentage: Number,
+    gps_lat: Number,
+    gps_lng: Number
 });
 
 module.exports = mongoose.model("Space", spaceSchema);
