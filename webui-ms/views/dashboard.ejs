@@ -18,8 +18,8 @@
     	<img src = "images/dashboard.png" onclick = "addSpace(event, this)">
         <div class = "text-center" id="map"></div>
     	<p id = "demo"></p>
-        <button onclick="submitSpaces()">Submit</button>
-        <button onclick='removeSpaces()'>Remove</button>
+        <button class="btn btn-success" onclick="submitSpaces()">Submit</button>
+        <button class="btn btn-danger" onclick='removeSpaces()'>Remove</button>
 
 
         <% include partials/footer %>
@@ -121,16 +121,17 @@
     			x_coord: x,
     			y_coord: y
     		};
+        spaces.push(space);
 
-    		tempSpaces.push(space);
+//    		tempSpaces.push(space);
             
-            if(tempSpaces.length==2){
-                var num = prompt("How many Spaces?");
-                gen_spaces(tempSpaces, num);
-                tempSpaces = [];
-            }
+//            if(tempSpaces.length==2){
+ //               var num = prompt("How many Spaces?");
+  //              gen_spaces(tempSpaces, num);
+    //            tempSpaces = [];
+//            }
     		var lot = "";
-    		for (var i = 0; i < tempSpaces.length; i++)
+  /*  		for (var i = 0; i < tempSpaces.length; i++)
     			lot += tempSpaces[i].type +
     					" x_coord: " +
     					tempSpaces[i].x_coord +
@@ -138,7 +139,7 @@
     					tempSpaces[i].y_coord;
 
     		document.getElementById("demo").innerHTML = lot;
-
+*/
     	}
         tempGPS = [];
         function addGPS(coords) {
@@ -148,8 +149,8 @@
                 gps_lng: coords.lng()
             };
 
-            tempGPS.push(geo);
-            
+            gps.push(geo);
+           /* 
             if(tempGPS.length==2){
                 var num = prompt("How many Spaces?");
                 gen_GPS(tempGPS, num);
@@ -163,7 +164,7 @@
                         tempGPS[i].gps_lng;
 
             document.getElementById("demo").innerHTML = lot;
-
+*/
         }
 
         function gen_spaces(twoSpaces, num){
@@ -178,7 +179,7 @@
             diffX = twoSpaces[1].x_coord - twoSpaces[0].x_coord;
             diffX = Math.floor(diffX / (num-1));
 
-            diffY = twoSpaces[1].y_coord - twoSpaces[0].y_coord;
+            diffY = -1 *twoSpaces[1].y_coord - twoSpaces[0].y_coord;
             diffY = Math.floor(diffY / (num-1));
 
             for(var i = 1; i<num-1; i++){

@@ -8,6 +8,11 @@ router.get("/dashboard", function(req, res) {
     res.render("dashboard");
 });
 
+// Servers the dashboard to the Administrator
+router.get("/student", function(req, res) {
+    res.render("student");
+});
+
 // The Web Dashboard creates a list os Parking Spaces and sends over that array of JSONs
 router.post("/add_spaces", function(req, res) {
     console.log("adding space", req.body);
