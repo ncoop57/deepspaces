@@ -31,8 +31,10 @@
             function initMap(){
               // Map options
               var options = {
-                zoom:8,
-                center:{lat:42.3601,lng:-71.0589}
+                zoom:21,
+                center:{lat:30.547452,lng:-87.21768},
+                mapTypeId: 'satellite'
+                // 30.547452, -87.217689
               }
 
               // New map
@@ -154,9 +156,9 @@
             var lot = "";
             for (var i = 0; i < tempGPS.length; i++)
                 lot +=  " LATITUDE: " +
-                        tempGPS[i].tempGPS_lat +
+                        tempGPS[i].gps_lat +
                         " LONGITUDE: " +
-                        tempGPS[i].tempGPS_lng;
+                        tempGPS[i].gps_lng;
 
             document.getElementById("demo").innerHTML = lot;
 
@@ -194,7 +196,7 @@
         function gen_GPS(twoGPS, num){
             var space = {
                 gps_lng: twoGPS[0].gps_lng,
-                gps_lat: twoSpaces[0].gps_lat
+                gps_lat: twoGPS[0].gps_lat
 
             }
             gps.push(space);
@@ -208,7 +210,7 @@
             }
             space = {
                 gps_lng: twoGPS[1].gps_lng,
-                gps_lat: twoSpaces[1].gps_lat
+                gps_lat: twoGPS[1].gps_lat
 
             }
             gps.push(space);
