@@ -174,7 +174,7 @@
 
             }
             spaces.push(space);
-            for(var i = 1; i<num; i++){
+            for(var i = 1; i<num-1; i++){
                 space = {
                     space_id:  spaces.length,
                     x_coord: (i*twoSpaces[0].x_coord + (num-i)*twoSpaces[1].x_coord)/(num),
@@ -201,7 +201,7 @@
 
             }
             gps.push(space);
-            for(var i = 1; i<num; i++){
+            for(var i = 1; i<num-1; i++){
                 space = {
                     gps_lat: (i*twoGPS[0].gps_lat + (num-i)*twoGPS[1].gps_lat)/(num),
                     gps_lng: (i*twoGPS[0].gps_lng + (num-i)*twoGPS[1].gps_lng)/(num)
