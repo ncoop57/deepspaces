@@ -54,7 +54,9 @@ public class MapsMarkerActivity extends AppCompatActivity
                 .title("Type: Disability"));
 
         googleMap.addMarker(new MarkerOptions().position(s1).title("Type: Commute"));
-        googleMap.addMarker(new MarkerOptions().position(s2).title("Type: Sutff"));
+        googleMap.addMarker(new MarkerOptions().position(s2).title("Type: Stuff"));
+
+        
 
 
         //zoom method 1
