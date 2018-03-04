@@ -18,6 +18,8 @@ router.post("/add_spaces", function(req, res) {
                                     type: req.body[i].type,
                                     x_coord: req.body[i].x_coord,
                                     y_coord: req.body[i].y_coord,
+                                    gps_lat: req.body[i].gps_lat,
+                                    gps_lng: req.body[i].gps_lng,
                                     percentage: 0});
         new_space.save(function(err, new_space) {
             if (err) return console.error(err);
