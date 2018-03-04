@@ -1,6 +1,21 @@
 import cv2
+import os
+import sys
+import coco
+import utils
+import model as modellib
 import numpy as np
+from flask import Flask
 
+app = Flask(__name__)
+
+@app.route('/start')
+def start():
+    gen_masks()
+    return "Hello World!"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port = 80)
 
 def random_colors(N):
     np.random.seed(1)
@@ -50,16 +65,7 @@ def display_instances(image, boxes, masks, ids, names, scores):
     return image
 
 
-if __name__ == '__main__':
-    """
-        test everything
-    """
-    import os
-    import sys
-    import coco
-    import utils
-    import model as modellib
-
+def gen_masks():
     ROOT_DIR = os.getcwd()
     MODEL_DIR = os.path.join(ROOT_DIR, "logs")
     COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")

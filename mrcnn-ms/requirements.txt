@@ -8,3 +8,4 @@ tensorflow==1.5
 keras
 jupyter
 opencv-python
+Flask
