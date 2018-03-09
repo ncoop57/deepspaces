@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+
+    <head>
+      <% include partials/head %>
+        <style>
+            #map{
+              height:400px;
+              width:960px;
+            }
+        </style>
+        <link rel = "stylesheet" href = "../stylesheets/cover.css">
+    </head>
+
+    <body class = "text-center">
+      <% include partials/nav %>
+        <h1 style = "color: #fff">Define Your Parking Spaces!</h1>
+    	<img src = "images/dashboard.png" onclick = "addSpace(event, this)">
+        <div class = "text-center" id="map"></div>
+    	<p id = "demo"></p>
+        <button class="btn btn-success" onclick="submitSpaces()">Submit</button>
+        <button class="btn btn-danger" onclick='removeSpaces()'>Remove</button>
+
+
+        <% include partials/footer %>
+
+    </body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+
+
+            function initMap(){
+              // Map options
+              var options = {
+                zoom:21,
+                center:{lat:30.547452,lng:-87.21768},
+                mapTypeId: 'satellite'
+                // 30.547452, -87.217689
+              }
+
+              // New map
+              var map = new google.maps.Map(document.getElementById('map'), options);
+
+              // Listen for click on map
+              google.maps.event.addListener(map, 'click', function(event){
+                // Add marker
+                addMarker({coords:event.latLng});
+                console.log(event.latLng);
+                addGPS(event.latLng);
+              });
+
+              // Array of markers
+              var markers = [
+                {
+                  coords:{lat:42.4668,lng:-70.9495},
+                  iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                  content:'<h1>Lynn MA</h1>'
+                },
+                {
+                  coords:{lat:42.8584,lng:-70.9300},
+                  content:'<h1>Amesbury MA</h1>'
+                },
+                {
+                  coords:{lat:42.7762,lng:-71.0773}
+                }
+              ];
+
+              // Loop through markers
+              for(var i = 0;i < markers.length;i++){
+                // Add marker
+                addMarker(markers[i]);
+              }
+
+              // Add Marker Function
+              function addMarker(props){
+                var marker = new google.maps.Marker({
+                  position:props.coords,
+                  map:map,
+                  //icon:props.iconImage
+                });
+
+                // Check for customicon
+                if(props.iconImage){
+                  // Set icon image
+                  marker.setIcon(props.iconImage);
+                }
+
+                // Check content
+                if(props.content){
+                  var infoWindow = new google.maps.InfoWindow({
+                    content:props.content
+                  });
+
+                  marker.addListener('click', function(){
+                    infoWindow.open(map, marker);
+                  });
+                }
+              }
+            }
+
+
+        var counter = 0;
+        spaces = [];
+        gps = [];
+
+
+
+        var tempSpaces = [];
+
+    	function addSpace(event, elem) {
+
+        var rect = elem.getBoundingClientRect();
+
+    		var x = 2 * Math.floor(event.clientX - rect.left);
+    		var y = 2 * Math.floor(event.clientY - rect.top);
+    		var type = prompt("What type of slot is this?", "All");
+
+    		space = {
+    			type: type,
+    			x_coord: x,
+    			y_coord: y
+    		};
+        spaces.push(space);
+
+//    		tempSpaces.push(space);
+            
+//            if(tempSpaces.length==2){
+ //               var num = prompt("How many Spaces?");
+  //              gen_spaces(tempSpaces, num);
+    //            tempSpaces = [];
+//            }
+    		var lot = "";
+  /*  		for (var i = 0; i < tempSpaces.length; i++)
+    			lot += tempSpaces[i].type +
+    					" x_coord: " +
+    					tempSpaces[i].x_coord +
+    					" y_coord: " +
+    					tempSpaces[i].y_coord;
+
+    		document.getElementById("demo").innerHTML = lot;
+*/
+    	}
+        tempGPS = [];
+        function addGPS(coords) {
+
+            geo = {
+                gps_lat: coords.lat(),
+                gps_lng: coords.lng()
+            };
+
+            gps.push(geo);
+           /* 
+            if(tempGPS.length==2){
+                var num = prompt("How many Spaces?");
+                gen_GPS(tempGPS, num);
+                tempGPS = [];
+            }
+            var lot = "";
+            for (var i = 0; i < tempGPS.length; i++)
+                lot +=  " LATITUDE: " +
+                        tempGPS[i].gps_lat +
+                        " LONGITUDE: " +
+                        tempGPS[i].gps_lng;
+
+            document.getElementById("demo").innerHTML = lot;
+*/
+        }
+
+        function gen_spaces(twoSpaces, num){
+            var space = {
+                space_id:  spaces.length,
+                x_coord: twoSpaces[0].x_coord,
+                y_coord: twoSpaces[0].y_coord,
+                type: twoSpaces[0].type
+
+            }
+            spaces.push(space);
+            diffX = twoSpaces[1].x_coord - twoSpaces[0].x_coord;
+            diffX = Math.floor(diffX / (num-1));
+
+            diffY = -1 *twoSpaces[1].y_coord - twoSpaces[0].y_coord;
+            diffY = Math.floor(diffY / (num-1));
+
+            for(var i = 1; i<num-1; i++){
+                space = {
+                    space_id:  spaces.length,
+                    x_coord: spaces[i-1].x_coord + diffX ,
+                    y_coord: spaces[i-1].y_coord + diffY ,
+                    type: twoSpaces[0].type
+
+                }
+                spaces.push(space);
+            }
+            space = {
+                space_id:  spaces.length,
+                x_coord: twoSpaces[1].x_coord,
+                y_coord: twoSpaces[1].y_coord,
+                type: twoSpaces[1].type
+
+            }
+            spaces.push(space);
+        }
+
+        function gen_GPS(twoGPS, num){
+            var space = {
+                gps_lng: twoGPS[0].gps_lng,
+                gps_lat: twoGPS[0].gps_lat
+
+            }
+            gps.push(space);
+            diff_lat = twoGPS[1].gps_lat - twoGPS[0].gps_lat;
+            diff_lat = diff_lat / (num-1);
+
+            diff_lng = twoGPS[1].gps_lng - twoGPS[0].gps_lng;
+            diff_lng = diff_lat / (num-1);
+            for(var i = 1; i<num-1; i++){
+                space = {
+                    gps_lat: gps[i-1].gps_lat + diff_lat,
+                    gps_lng: gps[i-1].gps_lng + diff_lng
+
+                }
+                gps.push(space);
+            }
+            space = {
+                gps_lng: twoGPS[1].gps_lng,
+                gps_lat: twoGPS[1].gps_lat
+
+            }
+            gps.push(space);
+        }
+
+        function submitSpaces(){
+            slots = [];
+
+            for(var i = 0; i<spaces.length; i++){
+                var slot = {
+                    space_id:spaces[i].space_id,
+                    type: spaces[i].type,
+                    x_coord: spaces[i].x_coord,
+                    y_coord: spaces[i].y_coord,
+                    gps_lat: gps[i].gps_lat,
+                    gps_lng: gps[i].gps_lng
+                }
+                slots.push(slot);
+//                addMarker({coords:{lat:slot.gps_lat,lng:slot.gps_lng}})
+            }
+
+            $.ajax({
+            url: '/add_spaces',
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(slots),
+            success: function(result, status, xhr) {
+                console.log(result);
+                // window.location = '/dashboard';
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            },
+            contentType: "application/json"
+            });
+
+            $.ajax({
+            url: '/mask/start',
+            type: 'GET',
+            dataType: 'json',
+            success: function(result, status, xhr) {
+                console.log(result);
+                // window.location = '/dashboard';
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            },
+            contentType: "application/json"
+            });
+        }
+
+        function removeSpaces(){
+            $.ajax({
+            url: '/del_spaces',
+            type: 'POST',
+            dataType: 'json',
+            success: function(result, status, xhr) {
+                console.log(result);
+                // window.location = '/dashboard';
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            },
+            contentType: "application/json"
+            });
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-Ir2I668E1aS-rkuDYYsIjQdstOPth1A&callback=initMap">
+    </script>
+</html>

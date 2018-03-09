@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+
+    <head>
+      <% include partials/head %>
+        <style>
+            #map{
+              height:400px;
+              width:960px;
+            }
+        </style>
+        <link rel = "stylesheet" href = "../stylesheets/cover.css">
+    </head>
+
+    <body class = "text-center">
+      <% include partials/nav %>
+        <div class = "text-center" id="map"></div>
+
+        <button class = "btn btn-success" onclick = "settimeout(initmap.updateview(), 500)">
+        <% include partials/footer %>
+
+    </body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+
+
+            function initMap(){
+              // Map options
+              var options = {
+                zoom:21,
+                center:{lat:30.547452,lng:-87.21768},
+                mapTypeId: 'satellite'
+                // 30.547452, -87.217689
+              }
+
+              // New map
+              var map = new google.maps.Map(document.getElementById('map'), options);
+
+              // Listen for click on map
+              google.maps.event.addListener(map, 'click', function(event){
+                // Add marker
+                addMarker({coords:event.latLng});
+                console.log(event.latLng);
+                addGPS(event.latLng);
+              });
+
+              // Array of markers
+              var markers = [
+                {
+                  coords:{lat:42.4668,lng:-70.9495},
+                  iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                  content:'<h1>Lynn MA</h1>'
+                },
+                {
+                  coords:{lat:42.8584,lng:-70.9300},
+                  content:'<h1>Amesbury MA</h1>'
+                },
+                {
+                  coords:{lat:42.7762,lng:-71.0773}
+                }
+              ];
+
+              // Loop through markers
+              for(var i = 0;i < markers.length;i++){
+                // Add marker
+                addMarker(markers[i]);
+              }
+
+              // Add Marker Function
+              function addMarker(props){
+                var marker = new google.maps.Marker({
+                  position:props.coords,
+                  map:map,
+                  //icon:props.iconImage
+                });
+
+                // Check for customicon
+                if(props.iconImage){
+                  // Set icon image
+                  marker.setIcon(props.iconImage);
+                }
+
+                // Check content
+                if(props.content){
+                  var infoWindow = new google.maps.InfoWindow({
+                    content:props.content
+                  });
+
+                  marker.addListener('click', function(){
+                    infoWindow.open(map, marker);
+                  });
+                }
+              }
+              function updateView() {
+              
+
+                $.ajax({
+                  url: '/get_spaces',
+                  type: 'GET',
+                  dataType: 'json',
+                  success: function(result, status, xhr) {
+                      console.log(result);
+                      for (var i = 0; i < result.length; i++)
+                      {
+                      
+                        addMarker({coords: {lat: result[i].gps_lat, lng: result[i].gps_lng}});
+                      
+                      }
+                      // window.location = '/dashboard';
+                  },
+                  error: function(xhr, status, error) {
+                      console.log(error);
+                  },
+                  contentType: "application/json"
+                });
+              
+              }
+              initMap.updateView = updateView;
+              setInterval(updateView(), 5000);
+            }
+
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-Ir2I668E1aS-rkuDYYsIjQdstOPth1A&callback=initMap">
+    </script>
+</html>

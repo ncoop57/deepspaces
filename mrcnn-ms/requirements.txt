@@ -1,0 +1,12 @@
+numpy
+scipy
+cython
+h5py
+Pillow
+scikit-image
+tensorflow==1.5
+keras
+jupyter
+opencv-python
+Flask
+requests
